@@ -1,24 +1,34 @@
-let heightImage = 83; // Game tile height //
-let widthImage = 101; // Game tile width //
-let leftMin = 0; // x axis "Left" limit of canvas //
-let rightMax = 400; // x axis "Right" limit of canvas //
-let upMax = 80; // y axis "Up" limit of canvas //
-var downLimit = 400; // y axis "Down" limit of canvas //
+// height each image box
+let heightImage = 83;
+// width each image box
+let widthImage = 101;
+// Minimum left
+let leftMin = 0;
+//Maximum right
+let rightMax = 400;
+//Maximum up for enemy
+let upMax = 80;
+//Minimum down
+var downMin = 400;
 
 class Enemy {
+
+
+    // set x , y  and  sprite  the enemy
     constructor(x, y) {
-        this.x = x; // Sets (x,y) enemy position on canvas //
+        this.x = x;
         this.y = y;
-        this.speed = Math.floor(Math.random() * 350 + 50); // Sets random initial speed
+        this.speed = Math.floor(Math.random() * 300 + 50); // set speed enemy random
+        // The image/sprite for our enemies, this uses
         this.sprite = 'images/enemy-bug.png';
 
     }
 
+    //update postion enemy in xis
     update(dt) {
         if (this.x < rightMax + 100) {
             this.x = this.x + this.speed * dt;
-        }
-        else {
+        } else {
             this.x = -(Math.floor(Math.random() * 50) + 30);
         }
 
@@ -39,13 +49,18 @@ class Player {
     }
 
     update() {
-        for (let enemy = 0; enemy < allEnemies.length; enemy++) {
-            if (player.x <= (allEnemies[enemy].x + 50) && allEnemies[enemy].x <= (player.x + 30) && player.y <= (allEnemies[enemy].y + 40) && allEnemies[enemy].y <= (player.y + 30)) {
+
+        allEnemies.forEach(function (enemy) {
+
+            if (player.x <= (enemy.x + 50) && enemy.x <= (player.x + 30) && player.y <= (enemy.y + 40) && enemy.y <= (player.y + 30)) {
                 player.reset();
             }
-        }
+        });
+
+
     }
 
+    // Set  placement of player on canvas
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 
@@ -55,12 +70,14 @@ class Player {
         this.x = 200;
         this.y = 400;
     }
-    survival(){
+
+//Every time the player reaches the water called survival
+    survival() {
         this.x = 200;
         this.y = 400;
-        let numberOfsurvival=$( "#survival" ).text();
+        let numberOfsurvival = $("#survival").text();
         numberOfsurvival++;
-        $( "#survival" ).text(numberOfsurvival);
+        $("#survival").text(numberOfsurvival);
 
     }
 
@@ -80,7 +97,7 @@ class Player {
                 else player.survival();
                 break;
             case 'down':
-                if (this.y < downLimit)
+                if (this.y < downMin)
                     this.y += heightImage;
                 break;
             default:
@@ -90,18 +107,16 @@ class Player {
 
 }
 
-// Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 let allEnemies = [];
 
-for(let en =0; en <6; en++){
-    let enmey =new Enemy(-(Math.floor(Math.random() * 50) + 30), (Math.floor(Math.random() * 220) + 50));
+for (let en = 0; en < 6; en++) {
+    let enmey = new Enemy(-(Math.floor(Math.random() * 50) + 30), (Math.floor(Math.random() * 220) + 50));
     allEnemies.push(enmey);
 }
 
 
-// Place the player object in a variable called player
-var player = new Player(200, 400); // Set initial placement of player on canvas //
+let player = new Player(200, 80); // Set initial placement of player on canvas //
 
 
 document.addEventListener('keyup', function (e) {
