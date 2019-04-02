@@ -1,15 +1,19 @@
 // height each image box
-let heightImage = 83;
+let Height_Image = 83;
+
 // width each image box
-let widthImage = 101;
+let Width_Image = 101;
+
 // Minimum left
-let leftMin = 0;
+let left_Min = 0;
 //Maximum right
-let rightMax = 400;
+let right_Max = 400;
 //Maximum up for enemy
-let upMax = 80;
+let up_Max = 80;
 //Minimum down
-var downMin = 400;
+var down_Min = 400;
+
+
 
 class Enemy {
 
@@ -26,7 +30,7 @@ class Enemy {
 
     //update postion enemy in xis
     update(dt) {
-        if (this.x < rightMax + 100) {
+        if (this.x < right_Max + 100) {
             this.x = this.x + this.speed * dt;
         } else {
             this.x = -(Math.floor(Math.random() * 50) + 30);
@@ -50,13 +54,11 @@ class Player {
 
     update() {
 
-        allEnemies.forEach(function (enemy) {
-
-            if (player.x <= (enemy.x + 50) && enemy.x <= (player.x + 30) && player.y <= (enemy.y + 40) && enemy.y <= (player.y + 30)) {
-                player.reset();
+        for(let en =0; en<allEnemies.length; en++){
+            if (this.x <= (allEnemies[en].x + 50) && allEnemies[en].x <= (this.x + 30) && this.y <= (allEnemies[en].y + 40) && allEnemies[en].y <= (this.y + 30)) {
+                this.reset();
             }
-        });
-
+        }
 
     }
 
@@ -84,21 +86,21 @@ class Player {
     handleInput(allowedKeys) {
         switch (allowedKeys) {
             case 'left':
-                if (this.x > leftMin)
-                    this.x -= widthImage;
+                if (this.x > left_Min)
+                    this.x -= Width_Image;
                 break;
             case 'right':
-                if (this.x < rightMax)
-                    this.x += widthImage;
+                if (this.x < right_Max)
+                    this.x += Width_Image;
                 break;
             case 'up':
-                if (this.y > upMax)
-                    this.y -= heightImage;
+                if (this.y > up_Max)
+                    this.y -= Height_Image;
                 else player.survival();
                 break;
             case 'down':
-                if (this.y < downMin)
-                    this.y += heightImage;
+                if (this.y < down_Min)
+                    this.y += Height_Image;
                 break;
             default:
                 return;
@@ -116,7 +118,7 @@ for (let en = 0; en < 6; en++) {
 }
 
 
-let player = new Player(200, 80); // Set initial placement of player on canvas //
+var player = new Player(200, 400); // Set initial placement of player on canvas //
 
 
 document.addEventListener('keyup', function (e) {
